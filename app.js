@@ -1,5 +1,7 @@
 var createError = require('http-errors');
+
 var express = require('express');
+
 var path = require('path');
 
 var cookieParser = require('cookie-parser');
@@ -74,16 +76,6 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-
-function checkSignIn(req, res){
-    if(req.session.user){
-        next();     //If session exists, proceed to page
-    } else {
-        var err = new Error("Not logged in!");
-        console.log(req.session.user);
-        next(err);  //Error, trying to access unauthorized page!
-    }
-}
 
 
 module.exports = app;

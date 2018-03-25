@@ -14,6 +14,10 @@ const registration_controller = require('../controllers/registration');
 
 const users_controller = require('../controllers/users_controller');
 
+const message_controller = require('../controllers/messages_controller');
+
+
+
 // for maintaining the session
 //var session;
 
@@ -25,12 +29,8 @@ router.get('/', function(req, res, next) {
 /* GET registration page. */
 router.post('/register',jsonParser ,function(req, res, next) {
     var user_object = req.body;
-    session = req.session;
     users_controller.create_user(user_object,function(err,response){
-        if(err == null )
-            res.send(response);
-        else
-            res.send(err);
+        res.send(response);
     });
 });
 
@@ -64,6 +64,49 @@ router.get('/logout',function(req,res,next){
             res.send("Successfully logged out.")
         }
     });
+
+});
+
+// send message to any registered user
+router.post('/sendmessage',jsonParser,function(req,res,next){
+    session = req.session;
+    if(session.user_id){
+        var message_object=req.body;
+        console.log(message_object);
+        message_controller.send_messge(message_object,session.user_id,function(error,response){
+            res.send(response);
+        });
+    }else
+    {
+        res.send("Please Login first.");
+    }
+});
+
+// get User inbox //
+router.get('/inbox',function(req,res,next){
+    session = req.session;
+    if(session.user_id){
+        message_controller.show_inbox(session.user_id,function(error,response){
+            res.send(response);
+        });
+    }else
+    {
+        res.send("Please Login first.");
+    }
+});
+
+// block any user //
+router.post('/block/:username',jsonParser,function(req,res,nex){
+    session = req.session;
+    if(session.user_id){
+        var username=req.params.username;
+        message_controller.block_user(username,session.user_id,function(error,response){
+            res.send(response);
+        });
+    }else
+    {
+        res.send("Please Login first.");
+    }
 
 });
 module.exports = router;
