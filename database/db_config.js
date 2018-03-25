@@ -1,5 +1,6 @@
 var mysql = require('mysql');
 
+// DB login credentials//
 var con = mysql.createConnection({
     host: "localhost",
     user: "root",
@@ -7,21 +8,27 @@ var con = mysql.createConnection({
     database: "assignment"
 });
 
-con.query('select * from users where id = ?',[1],function(error,fetch_response){
-    if(!error)
-        console.log(fetch_response)
-    else
-        console.log(error)
-})
 
+//  query function that will execute all types of queries //
 module.exports = {
+    // two seprate functions for searching and updating because of diffrent function for result rows cout.
+    // for searching //
     query: function(text,params,callback) {
-        console.log(params)
         const start = Date.now();
         return con.query(text,params,function(err,res){
             const duration = Date.now() - start;
-            console.log('executed query', { text, duration, total_rows: res.length })
+            console.log('executed query', { text, duration, total_rows: res.lengtth })
+            callback(err, res);
+        });
+    },
+    //for creating,updating and deleting.
+    update: function(text,params,callback){
+        const start = Date.now();
+        return con.query(text,params,function(err,res){
+            const duration = Date.now() - start;
+            console.log('transaction done', { text, duration, total_rows: res.affectedRows })
             callback(err, res);
         });
     }
+
 }
