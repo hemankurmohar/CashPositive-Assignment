@@ -17,7 +17,7 @@ module.exports = {
         const start = Date.now();
         return con.query(text,params,function(err,res){
             const duration = Date.now() - start;
-            console.log('executed query', { text, duration, total_rows: res.lengtth })
+            console.log('executed query', { text, duration, total_rows: res.length })
             callback(err, res);
         });
     },
@@ -26,7 +26,7 @@ module.exports = {
         const start = Date.now();
         return con.query(text,params,function(err,res){
             const duration = Date.now() - start;
-            console.log('transaction done', { text, duration, total_rows: res.affectedRows })
+            console.log('transaction done', { text, duration, total_rows_affected: res.affectedRows })
             callback(err, res);
         });
     }
