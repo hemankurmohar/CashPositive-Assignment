@@ -96,7 +96,7 @@ router.get('/inbox',function(req,res,next){
 });
 
 // block any user //
-router.post('/block/:username',jsonParser,function(req,res,nex){
+router.put('/block/:username',jsonParser,function(req,res,nex){
     session = req.session;
     if(session.user_id){
         var username=req.params.username;
